@@ -1,20 +1,41 @@
 import React from 'react';
 
 function LoginPage() {
-    let onSubmitBtnClick = function(e){
-        console.log(e.target);
-    }
-    let vmi = function(){
+  let inputValues = {
+    registerUserName: '',
+    registerPsw: '',
+    loginUserName : '',
+    loginPsw : ''
+  }
 
-    }
-    function showRegister(){
-      document.querySelector('.login-modul').classList.add('d-none');
-      document.querySelector('.register-modul').classList.remove('d-none');
-    }
-    function showLogin(){
-      document.querySelector('.register-modul').classList.add('d-none');
-      document.querySelector('.login-modul').classList.remove('d-none');
-    }
+  let onSubmitBtnClick = function(e){
+      if(e.target.id === "registerSubmit"){
+        //POST NEW USER DATA
+      }else {
+        // LOOK FOR USER DATA IN DATABASE
+        let found = false;
+        fetch("https://dummyjson.com/users").then(response => response.json())
+        .then(data => {
+          data.users.forEach(element => {
+            if(inputValues.loginUserName === element.username && inputValues.loginPsw === element.password){
+                found = true;
+            }
+          });
+          found ? console.log('sikeres belépés') : console.log('hibás adatok');
+        });
+      }
+  }
+  let formInputChange = function(e){
+    inputValues[e.target.id] = e.target.value;
+  }
+  function showRegister(){
+    document.querySelector('.login-modul').classList.add('d-none');
+    document.querySelector('.register-modul').classList.remove('d-none');
+  }
+  function showLogin(){
+    document.querySelector('.register-modul').classList.add('d-none');
+    document.querySelector('.login-modul').classList.remove('d-none');
+  }
   return (
     <>
       <div>Welcome to TCRW hosting</div>
@@ -25,19 +46,19 @@ function LoginPage() {
       <div className='register-modul d-none'>
         <div>Register</div>
         <form>
-          <input className='register username' type="text" onChange={vmi}></input>
-          <input className="register password" type="password"onChange={vmi}></input>
+          <input className='register username' id="registerUserName" type="text" onChange= {formInputChange}></input>
+          <input className="register password" id="registerPsw" type="password"onChange= {formInputChange}></input>
         </form>
-        <button className="register submit" onClick={onSubmitBtnClick}>submit</button>
+        <button className="register submit" id="registerSubmit" onClick={onSubmitBtnClick}>submit</button>
       </div>
       
       <div className='login-modul d-none'>
         <div>Log In</div>
         <form>
-          <input className='login username' type="text" onChange={vmi}></input>
-          <input className="login password" type="password" onChange={vmi}></input>
+          <input className='login username' id="loginUserName" type="text" onChange= {formInputChange}></input>
+          <input className="login password" id="loginPsw" type="password" onChange= {formInputChange}></input>
         </form>
-        <button className="login submit" onClick={onSubmitBtnClick}>submit</button>
+        <button className="login submit" id="loginSubmit" onClick={onSubmitBtnClick}>submit</button>
       </div>
       
     </>

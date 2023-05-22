@@ -14,7 +14,7 @@ function LoginPage() {
       }else {
         // LOOK FOR USER DATA IN DATABASE
         let found = false;
-        fetch("https://dummyjson.com/users").then(response => response.json())
+        /*fetch("https://dummyjson.com/users").then(response => response.json())
         .then(data => {
           data.users.forEach(element => {
             if(inputValues.loginUserName === element.username && inputValues.loginPsw === element.password){
@@ -22,7 +22,19 @@ function LoginPage() {
             }
           });
           found ? console.log('sikeres belépés') : console.log('hibás adatok');
-        });
+        });*/
+        fetch('https://dummyjson.com/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            
+            username: 'kminchelle',
+            password: '0lelplR',
+            // expiresInMins: 60, // optional
+          })
+        })
+        .then(res => res.json())
+        .then(console.log);
       }
   }
   let formInputChange = function(e){
